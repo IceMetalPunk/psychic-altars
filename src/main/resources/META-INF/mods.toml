@@ -29,7 +29,7 @@ displayName="Psychic Altars" #mandatory
 # A file name (in the root of the mod JAR) containing a logo for display
 logoFile="psychicaltarslogo.png" #optional
 # A text field displayed in the mod UI
-credits="IceMetalPunk" #optional
+credits="diesieben07 for debugging help" #optional
 # A text field displayed in the mod UI
 authors="IceMetalPunk" #optional
 # The description text for the mod (multi line!) (#mandatory)
