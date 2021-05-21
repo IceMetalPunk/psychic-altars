@@ -157,7 +157,7 @@ public abstract class PAAltarBlock extends PABasicBlock {
 	}
 
 	public AxisAlignedBB getRangeBB(BlockPos pos) {
-		return AxisAlignedBB.ofSize(1, 1, 1).move(pos).expandTowards(this.range, this.range, this.range);
+		return AxisAlignedBB.ofSize(1, 1, 1).move(pos).inflate(this.range);
 	}
 
 	public int validate(BlockState state, ServerWorld world, BlockPos pos, @Nullable Random rand,
