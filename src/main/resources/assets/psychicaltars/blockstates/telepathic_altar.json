@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "active=false": {
+      "model": "psychicaltars:block/telepathic_altar_inactive"
+    },
+    "active=true": {
+      "model": "psychicaltars:block/telepathic_altar_active"
+    }
+  }
+}

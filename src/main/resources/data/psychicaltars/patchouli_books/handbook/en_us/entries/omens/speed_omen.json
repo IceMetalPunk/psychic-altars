@@ -1,0 +1,15 @@
+{
+    "name": "Speed Omen",
+    "icon": "psychicaltars:speed_omen",
+    "category": "psychicaltars:omens_category",
+    "pages": [
+        {
+            "type": "text",
+            "text": "A speed omen will increase the rate at which your altar works. Generally speaking, each speed omen increases the speed by 25%, with a max of 4 speed omens per altar."
+        },
+        {
+            "type": "crafting",
+            "recipe": "psychicaltars:speed_omen"
+        }
+    ]
+}

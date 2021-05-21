@@ -1,0 +1,25 @@
+{
+    "name": "Telepathic Altar",
+    "icon": "psychicaltars:telepathic_altar",
+    "category": "psychicaltars:altars_category",
+    "pages": [
+        {
+            "type": "text",
+            "text": "A telepathic altar channels psychic energy into manipulating the minds of others, altering mob behavior in ways you can use to your own benefits."
+        },
+        {
+            "type": "crafting",
+            "recipe": "psychicaltars:telepathic_altar"
+        },
+        {
+            "type": "text",
+            "title": "Tier I",
+            "text": "A Tier I Telepathic Altar is also known as a \"Love Altar\". It will automatically breed animals in range.$(br2)$(l)Base Speed:$() 60s \/ operation$(br)$(l)Efficiency Effect:$() Increases the number of babies per breeding.$(br)$(l)Requirements:$() The proper breeding food items must be supplied in the inventory below the focus."
+        },
+        {
+            "type": "multiblock",
+            "name": "\"Love Altar\"",
+            "multiblock_id": "psychicaltars:telepathic_altar_tier1"
+        }
+    ]
+}

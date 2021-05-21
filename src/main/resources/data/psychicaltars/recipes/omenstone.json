@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SBS",
+    "BOB",
+    "SBS"
+  ],
+  "key": {
+    "S": {
+      "item": "minecraft:stone"
+    },
+    "B": {
+      "item": "minecraft:polished_blackstone"
+    },
+    "O": {
+      "item": "minecraft:soul_sand"
+    }
+  },
+  "result": {
+    "item": "psychicaltars:omenstone",
+    "count": 8
+  }
+}

@@ -1,0 +1,21 @@
+{
+	"itemGroup.psychicaltars": "Psychic Altars",
+	"block.psychicaltars.omenstone": "Omenstone",
+	"block.psychicaltars.speed_omen": "Speed Omen",
+	"block.psychicaltars.range_omen": "Range Omen",
+	"block.psychicaltars.efficiency_omen": "Efficiency Omen",
+	"block.psychicaltars.anchor_omen": "Anchor Omen",
+	"block.psychicaltars.persistence_omen": "Persistence Omen",
+	"block.psychicaltars.craft_recipe_block": "Crafting Recipe Block",
+
+	"block.psychicaltars.telepathic_altar": "Telepathic Altar Focus",
+
+	"container.psychicaltars.craft_recipe_block": "Crafting Recipe",
+
+	"errors.psychicaltars.invalid_altar.unknown": "Altar invalid for an unknown reason.",
+	"errors.psychicaltars.invalid_altar.not_found": "No valid altar structure found.",
+	"errors.psychicaltars.invalid_altar.excess_omens": "This altar does not support more than %s %s %s.",
+	"extra.psychicaltars.omen_singular": "omen",
+	"extra.psychicaltars.omen_plural": "omens",
+	"errors.psychicaltars.invalid_altar.none": "Altar is valid and complete!"
+}

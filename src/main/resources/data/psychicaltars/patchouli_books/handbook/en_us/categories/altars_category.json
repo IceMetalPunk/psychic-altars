@@ -1,0 +1,5 @@
+{
+	"name": "Altars",
+	"description": "Altars are the main desired product of manipulating psychic energy. They are structures which absorb psychicness and put it to use in some functional manner.$(br2)$(l)$(o)Note:$() Whenever you see a barrel in an altar diagram, you may replace it with any inventory block. Barrels, chests, modded inventories, Refined Storage interfaces, and more are all valid.",
+	"icon": "psychicaltars:telepathic_altar"
+}

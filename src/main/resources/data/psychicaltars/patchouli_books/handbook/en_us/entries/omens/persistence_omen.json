@@ -1,0 +1,15 @@
+{
+    "name": "Persistence Omen",
+    "icon": "psychicaltars:persistence_omen",
+    "category": "psychicaltars:omens_category",
+    "pages": [
+        {
+            "type": "text",
+            "text": "A persistence omen will keep all chunks the altar is in loaded at all times. Maximum of 1 persistence omen per altar. To avoid loading more chunks than needed, try to build your altar within a single chunk whenever possible."
+        },
+        {
+            "type": "crafting",
+            "recipe": "psychicaltars:persistence_omen"
+        }
+    ]
+}

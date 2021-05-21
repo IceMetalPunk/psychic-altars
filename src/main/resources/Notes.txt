@@ -1,0 +1,97 @@
+TODO:
+
+- Implement Telepathic altar and add other tiers of altar
+- Implement anchor and persistence omens
+
+NOTES:
+
+Use scheduled ticks on regular blocks to do processing, not block entities.
+
+Some altars may allow/require a barrel as part of their construction (usually just under the focus), where you put configuration
+or input items.
+
+Clairvoyant Talisman can be right-clicked onto any altar focus to print useful info into the chat
+
+If an altar allows omens (blocks made of Omenstone) in some places, these are the modifiers:
+	- Anchor: Only one anchor per altar max. Altar acts as though the focus is at that anchor's position
+	- Speed: Lowers wait time between scheduled ticks.
+	- Range: Increases range of effect, if one exists. Not valid in altars that have no range.
+		-- Most ranged altar effects begin with a base range of just inside the altar itself
+	- Persistence: Loads the chunk(s) the altar is in. (Use the method the ChunkNoGoByeBye mod uses.)
+	- Efficiency: Not all altars allow this; those that do differ in their effects.
+
+Five schools of psychic altars, each with multiple tiers:
+
+1. Telekinetic Altar (Req: piston)
+	I: Pushing entities (like fans or conveyors)
+		a. The sides of the altar are made of potential fan blocks that will blow away from the altar
+	II: Vacuum hopper behavior
+		a. Teleports item entities in range to one of the attached barrels, if there is one
+		b. If no barrel exists, will teleport the items as entities just above the focus
+	III: Recharges a Telekinetic Talisman's Slow Fall ability if it's in your inventory and you're in range
+		a. Can also charge talismans in attached barrels
+		b. Shift-right-click the talisman in the air to activate/deactivate it
+		c. When active, talisman gives you slow fall and takes 1 damage per block slow-fallen
+		e. Efficiency Omen: Eff. levels are stored on talisman when charged (if greater) and determine the level of Slow Fall it gives
+			i. Will only charge up to (altar_eff / talisman_eff) * 100%
+	IV: Intradimensional teleportals
+		a. End gateways generated with specific coords
+		b. Telekinetic Talisman can be shift-clicked or clicked on altar foci to store destination or generate portal, respectively
+			i. Does not require talisman to be charged
+		c. Will only generate the portal if destination is within range (can upgrade with range omens)
+
+2. Telepathic Altar (Req: zombie brains)
+	I: Emotional manipulation
+		a. Puts animals into Love Mode faster
+		b. Efficiency Omen: +1 baby produced per omen
+			i. On cycle, each baby younger than 1 cycle old gets cloned "Eff." times
+	II: Persuasion
+		a. Gives mobs in range slowness
+		b. Efficiency Omen: +1 level of slowness
+			i. After some max level, sets NoAI entirely
+	III: Mental domination
+		a. Makes mobs in range target other hostile mobs (MonsterEntity) instead of players or passive mobs
+		b. Or sets target to null to prevent any attacks if there's no monsters in range
+		c. Efficiency Omen: Gives strength (1 level / omen) to mobs in range targeting non-player mobs
+
+3. Pyrokinetic Altar (Req: campfire)
+	I: Sets non-player entities that step in range on fire.
+		a. If mob is Entity#fireImmune and LivingEntity#isSensitiveToWater, apply drowning damage instead and water-drip particles
+		b. Efficiency Omen: Deals extra fire (or drowning) damage per omen
+			i. Just deal damage directly on cycle in addition to the other behavior
+	II: Smelts item entities dropped onto it, or items in attached barrels
+		a. Places in attached barrels, or drops on top of focus if no barrel is available
+		b. Efficiency Omen: Ore doubling. +X% chance of doubled ore smelts per omen
+			i. X = 100 / total number of allowed omens in this altar
+	III: Generates lava sources at a steady rate
+
+4. Precognitive Altar (Req: clock)
+	I: Charges Precognitive Talismans in attached barrel or player inventory in range
+		a. Precog Talisman can be right-clicked to skip 12 in-game hours ahead without resetting spawnpoint
+			i. Set newTime = currentTime + 12000, and then ServerWorld#setDayTime to newTime - (newTime % 12000)
+			ii. Check ServerWorld#tick(), just before wakeUpAllPlayers() is called, for more info
+		b. Also clears insomnia stat (ServerPlayerEntity#resetStat(Stats.CUSTOM.get(Stats.TIME_SINCE_REST)))
+	II: Speeds crop growth in range
+		a. Adds random ticks; ensure it works with chorus plants, sugarcane, etc.
+	III: Speeds ticking block entities in range
+		a. Calls the tick() method multiple times per cycle for each ticking block entity in range 
+
+5. Metavivic Altar (Req: vex soul fragments) - 4 Nether portals are on the edges of the altar itself
+	I: Kills mobs in range with no loot, but a chance to capture their souls (in drops or attached barrels)
+		a. Soul items can be right-clicked on a spawner to change it to that type
+		b. Like a spawn egg, but it can't spawn single mobs with normal block-clicking
+		c. Efficiency Omen: +X% chance of capturing a soul
+			i. i. X = (100 - base chance) / total number of allowed omens in this altar
+	II: Prevents hostile mob spawns in range
+	III: Can charge a Metavivic Talisman in your inventory if you're in range
+		a. Acts like a super totem of undying
+		b. In addition to normal totem effects, also gives you:
+			i. Invisibility
+			ii. Teleports you to the bound altar if killed by void damage (req. 2 air blocks above focus)
+			iii. Multiple uses (as long as it's charged)
+			iv. Works from anywhere in your inventory, not just your hand, including Curio Charm slot
+			
+6. Apport Altar (Req: crafting table) (autocrafting)
+	I. Autocrafts storage blocks - 2 recipes
+	II. Autocrafts anything - 4 recipes
+	III. Crafts top-tier items? - 8 recipes

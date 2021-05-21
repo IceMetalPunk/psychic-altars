@@ -1,0 +1,15 @@
+{
+    "name": "Efficiency Omen",
+    "icon": "psychicaltars:efficiency_omen",
+    "category": "psychicaltars:omens_category",
+    "pages": [
+        {
+            "type": "text",
+            "text": "An efficiency omen will increase the productivity or power of the altar it's in. Its exact effect depends on the type of altar; look into each altar to see what it will do."
+        },
+        {
+            "type": "crafting",
+            "recipe": "psychicaltars:efficiency_omen"
+        }
+    ]
+}

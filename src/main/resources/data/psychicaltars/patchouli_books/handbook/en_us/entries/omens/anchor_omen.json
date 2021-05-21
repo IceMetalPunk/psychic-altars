@@ -1,0 +1,15 @@
+{
+    "name": "Anchor Omen",
+    "icon": "psychicaltars:anchor_omen",
+    "category": "psychicaltars:omens_category",
+    "pages": [
+        {
+            "type": "text",
+            "text": "An anchor omen will move the center of the altar's effect from the altar's focus to the anchor omen itself. While an anchor omen must be part of the altar, in an omen space, the altars that support it may benefit from moving their epicenter to the edge, top, or bottom of the altar, for instance."
+        },
+        {
+            "type": "crafting",
+            "recipe": "psychicaltars:anchor_omen"
+        }
+    ]
+}

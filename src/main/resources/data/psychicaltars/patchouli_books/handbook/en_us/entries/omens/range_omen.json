@@ -1,0 +1,15 @@
+{
+    "name": "Range Omen",
+    "icon": "psychicaltars:range_omen",
+    "category": "psychicaltars:omens_category",
+    "pages": [
+        {
+            "type": "text",
+            "text": "A range omen increases the range of the altar's effect. Each range omen doubles the range, with a max of 3 range omens per altar."
+        },
+        {
+            "type": "crafting",
+            "recipe": "psychicaltars:range_omen"
+        }
+    ]
+}

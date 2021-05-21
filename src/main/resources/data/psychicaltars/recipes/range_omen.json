@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " O ",
+    "OPO",
+    " O "
+  ],
+  "key": {
+    "P": {
+      "item": "minecraft:ender_pearl"
+    },
+    "O": {
+      "item": "psychicaltars:omenstone"
+    }
+  },
+  "result": {
+    "item": "psychicaltars:range_omen",
+    "count": 4
+  }
+}

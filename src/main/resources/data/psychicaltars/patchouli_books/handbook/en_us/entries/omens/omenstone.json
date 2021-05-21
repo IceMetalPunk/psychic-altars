@@ -1,0 +1,16 @@
+{
+    "name": "Omenstone",
+    "icon": "psychicaltars:omenstone",
+    "category": "psychicaltars:omens_category",
+    "sortnum": -1,
+    "pages": [
+        {
+            "type": "text",
+            "text": "Omenstone is the basis for all altars, but it's also the basis for all omens!"
+        },
+        {
+            "type": "crafting",
+            "recipe": "psychicaltars:omenstone"
+        }
+    ]
+}
