@@ -63,9 +63,13 @@ public class PAEventHandler {
 						return baby;
 					});
 					if (babyClone != null) {
-						System.out.println("Spawned clone " + j + "!");
 						DifficultyInstance diff = server.getCurrentDifficultyAt(animalChild.blockPosition());
 						((AnimalEntity) babyClone).finalizeSpawn(server, diff, SpawnReason.BREEDING, null, null);
+						if (server.tryAddFreshEntityWithPassengers(babyClone)) {
+							System.out.println("Spawned clone " + j + "!");
+						} else {
+							System.out.println("Failed to tryAdd clone " + j + "!");
+						}
 					} else {
 						System.out.println("Failed to spawn clone " + j + "!");
 					}
