@@ -33,7 +33,7 @@ public class BlockRegistry {
 
 	public static void registerBlocks(final RegistryEvent.Register<Block> event) {
 		for (PABlock block : registry.values()) {
-			block.register(event);
+			event.getRegistry().register((Block) block);
 		}
 		MultiblockHelper.registerMatchers();
 		MultiblockHelper.registerMultiblocks(registry.values());
@@ -47,9 +47,7 @@ public class BlockRegistry {
 
 	public static void setRenderLayers() {
 		for (PABlock block : registry.values()) {
-			if (block.getRenderLayer() != null) {
-				RenderTypeLookup.setRenderLayer((Block) block, block.getRenderLayer());
-			}
+			RenderTypeLookup.setRenderLayer((Block) block, block.getRenderLayer());
 		}
 	}
 

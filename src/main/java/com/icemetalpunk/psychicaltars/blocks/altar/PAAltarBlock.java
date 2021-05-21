@@ -3,6 +3,7 @@ package com.icemetalpunk.psychicaltars.blocks.altar;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
+import java.util.Optional;
 import java.util.Random;
 import java.util.UUID;
 import java.util.function.Function;
@@ -10,9 +11,11 @@ import java.util.function.Function;
 import javax.annotation.Nullable;
 
 import org.apache.commons.lang3.tuple.MutableTriple;
+import org.apache.commons.lang3.tuple.Pair;
 
 import com.icemetalpunk.psychicaltars.blocks.IOmen.OmenTypes;
 import com.icemetalpunk.psychicaltars.blocks.PABasicBlock;
+import com.icemetalpunk.psychicaltars.helpers.AltarData;
 import com.icemetalpunk.psychicaltars.multiblocks.InvalidAltarTypes;
 import com.icemetalpunk.psychicaltars.multiblocks.MultiblockHelper;
 
@@ -36,6 +39,7 @@ import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.ChatType;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IBlockReader;
@@ -49,9 +53,7 @@ public abstract class PAAltarBlock extends PABasicBlock {
 	public static final BooleanProperty ACTIVE = BooleanProperty.create("active");
 	protected ArrayList<IMultiblock> tiers = new ArrayList<>();
 	protected HashMap<OmenTypes, Function<Integer, Integer>> maxOmens = new HashMap<>();
-	public boolean isValid = false;
-	public int tier = 0;
-	public int range = 1;
+	protected HashMap<Integer, ArrayList<Pair<IParticleData, Vector3d>>> particles = new HashMap<>();
 
 	public PAAltarBlock(Properties props, String name) {
 		super(props.noOcclusion(), name);
@@ -64,19 +66,29 @@ public abstract class PAAltarBlock extends PABasicBlock {
 		this.maxOmens.put(OmenTypes.EFFICIENCY, tier -> 4);
 
 		this.setMaxOmens();
+		this.setParticleTypes();
 	}
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
 	public void animateTick(BlockState state, World world, BlockPos pos, Random rand) {
-		IParticleData part = this.getActiveParticle(this.tier, state);
-		if (part != null && state.getValue(ACTIVE)) {
-			double dx = (double) pos.getX() + rand.nextDouble();
-			double dy = (double) pos.getY() + 0.5D;
-			double dz = (double) pos.getZ() + rand.nextDouble();
-			world.addParticle(part, dx, dy, dz, 0.5D, 0.5D, 0.5D);
-		}
-
+		Optional<AltarData> validation = this.validate(state, world, pos, rand, null);
+		validation.ifPresent(altarData -> {
+			if (state.getValue(ACTIVE) && this.particles.containsKey(altarData.tier)) {
+				ArrayList<Pair<IParticleData, Vector3d>> partInfo = this.particles.get(altarData.tier);
+				for (Pair<IParticleData, Vector3d> info : partInfo) {
+					IParticleData part = info.getLeft();
+					Vector3d destination = info.getRight();
+					double dispersion = this.getParticleDispersion(altarData.tier);
+					int xDir = rand.nextInt(3) - 1;
+					int yDir = rand.nextInt(3) - 1;
+					double dx = (double) pos.getX() + 0.5D + rand.nextDouble() * dispersion * xDir;
+					double dy = (double) pos.getY() + 0.5D;
+					double dz = (double) pos.getZ() + 0.5D + rand.nextDouble() * dispersion * yDir;
+					world.addParticle(part, dx, dy, dz, destination.x, destination.y, destination.z);
+				}
+			}
+		});
 	}
 
 	@Override
@@ -105,16 +117,18 @@ public abstract class PAAltarBlock extends PABasicBlock {
 
 	protected abstract void setMaxOmens();
 
+	protected abstract void setParticleTypes();
+
+	protected double getParticleDispersion(int tier) {
+		return 1.0D;
+	}
+
 	protected abstract int getBaseSpeed(int tier);
 
 	protected abstract int getBaseRange(int tier);
 
-	@Nullable
-	protected IParticleData getActiveParticle(int tier, BlockState state) {
-		return null;
-	}
-
-	protected abstract void operate(BlockState state, ServerWorld world, BlockPos pos, Random rand);
+	protected abstract void operate(BlockState state, ServerWorld world, BlockPos pos, Random rand,
+			AltarData altarData);
 
 	@Override
 	public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand,
@@ -156,41 +170,41 @@ public abstract class PAAltarBlock extends PABasicBlock {
 		}
 	}
 
-	public AxisAlignedBB getRangeBB(BlockPos pos) {
-		return AxisAlignedBB.ofSize(1, 1, 1).move(pos).inflate(this.range);
+	public AxisAlignedBB getRangeBB(BlockPos pos, int range) {
+		return AxisAlignedBB.ofSize(1, 1, 1).move(pos).inflate(range);
 	}
 
-	public int validate(BlockState state, ServerWorld world, BlockPos pos, @Nullable Random rand,
+	public Optional<AltarData> validate(BlockState state, World world, BlockPos pos, @Nullable Random rand,
 			@Nullable MutableTriple<InvalidAltarTypes, OmenTypes, Integer> info) {
-		MultiblockHelper.resetData();
 		boolean wasValid = state.getValue(ACTIVE);
-		this.isValid = false;
-		this.tier = 0;
-		this.range = 1;
+		boolean isValid = false;
+		int tier = 0;
+		int range = 1;
 		for (int i = this.tiers.size() - 1; i >= 0; --i) {
+			MultiblockHelper.resetData();
 			if (this.tiers.get(i).validate(world, pos) != null) {
-				this.isValid = true;
-				this.tier = i + 1;
+				isValid = true;
+				tier = i + 1;
 				break;
 			}
 		}
 
-		if (this.isValid) {
+		if (isValid) {
 			for (Entry<OmenTypes, Function<Integer, Integer>> max : this.maxOmens.entrySet()) {
 				int count = MultiblockHelper.getOmenCount(max.getKey());
-				if (count > max.getValue().apply(this.tier)) {
-					this.isValid = false;
+				if (count > max.getValue().apply(tier)) {
+					isValid = false;
 					if (info != null) {
 						info.setLeft(InvalidAltarTypes.EXCESS_OMENS);
 						info.setMiddle(max.getKey());
-						info.setRight(max.getValue().apply(this.tier));
+						info.setRight(max.getValue().apply(tier));
 					}
 					break;
 				}
 			}
 		}
 
-		if (this.isValid) {
+		if (isValid) {
 			if (info != null) {
 				info.setLeft(InvalidAltarTypes.NONE);
 			}
@@ -200,31 +214,39 @@ public abstract class PAAltarBlock extends PABasicBlock {
 			}
 
 			int upgradeSpeed = MultiblockHelper.getOmenCount(OmenTypes.SPEED);
-			int baseSpeed = this.getBaseSpeed(this.tier);
-			return (int) Math.max(1, baseSpeed * (1 - 0.25 * upgradeSpeed));
+			int baseSpeed = this.getBaseSpeed(tier);
+
+			int upgradeRange = MultiblockHelper.getOmenCount(OmenTypes.RANGE);
+			int baseRange = this.getBaseRange(tier);
+			range = (int) Math.max(1, baseRange * (1 << upgradeRange));
+
+			return Optional.of(new AltarData(tier, range, (int) Math.max(1, baseSpeed * (1 - 0.25 * upgradeSpeed))));
 		} else if (wasValid) {
 			world.setBlock(pos, world.getBlockState(pos).setValue(ACTIVE, false), 3);
 		}
 
-		return 20;
+		if (!isValid) {
+			return Optional.empty();
+		}
+		return Optional.of(new AltarData(tier, range, 20));
 	}
 
 	@Override
 	public void tick(BlockState state, ServerWorld world, BlockPos pos, Random rand) {
-		int tickTime = this.validate(state, world, pos, rand, null);
+		Optional<AltarData> validation = this.validate(state, world, pos, rand, null);
 
-		if (this.isValid) {
-			int upgradeRange = MultiblockHelper.getOmenCount(OmenTypes.RANGE);
-			int baseRange = this.getBaseRange(this.tier);
-			this.range = (int) Math.max(1, baseRange * (1 << upgradeRange));
+		if (validation.isPresent()) {
+			AltarData altarData = validation.get();
 
 			BlockPos operationPos = pos;
 			ArrayList<BlockPos> anchorPosList = MultiblockHelper.getOmenPositions(OmenTypes.ANCHOR);
 			if (anchorPosList.size() > 0) {
 				operationPos = anchorPosList.get(0);
 			}
-			this.operate(state, world, operationPos, rand);
+			this.operate(state, world, operationPos, rand, altarData);
+			world.getBlockTicks().scheduleTick(pos, this, altarData.speed);
+		} else {
+			world.getBlockTicks().scheduleTick(pos, this, 20);
 		}
-		world.getBlockTicks().scheduleTick(pos, this, tickTime);
 	}
 }

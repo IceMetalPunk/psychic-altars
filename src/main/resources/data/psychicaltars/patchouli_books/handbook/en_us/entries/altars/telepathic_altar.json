@@ -20,6 +20,16 @@
             "type": "multiblock",
             "name": "\"Love Altar\"",
             "multiblock_id": "psychicaltars:telepathic_altar_tier1"
+        },
+        {
+            "type": "text",
+            "title": "Tier II",
+            "text": "A Tier II Telepathic Altar is also known as a \"Persuasion Altar\". It will convince non-player mobs in range to slow down. With 5 efficiency omens and 3 speed omens, you can completely stop mobs in their tracks.$(br2)$(l)Base Speed:$() 30s \/ application of Slowness$(br)$(l)Efficiency Effect:$() Increases the level of slowness applied.$(br)$(l)Special Notes:$() Can have up to 5 efficiency omens."
+        },
+        {
+            "type": "multiblock",
+            "name": "\"Persuasion Altar\"",
+            "multiblock_id": "psychicaltars:telepathic_altar_tier2"
         }
     ]
 }

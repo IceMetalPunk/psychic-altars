@@ -5,7 +5,7 @@
     "pages": [
         {
             "type": "text",
-            "text": "A speed omen will increase the rate at which your altar works. Generally speaking, each speed omen increases the speed by 25%, with a max of 4 speed omens per altar."
+            "text": "A speed omen will increase the rate at which your altar works. Generally speaking, each speed omen increases the speed by 25%, with a max of 4 speed omens per altar; however, some altars allow more or fewer speed omens, so check the specific altar description to be sure."
         },
         {
             "type": "crafting",

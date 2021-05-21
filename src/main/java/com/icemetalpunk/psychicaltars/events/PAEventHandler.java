@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import com.icemetalpunk.psychicaltars.helpers.FakePlayerHelper;
 
+import net.minecraft.entity.AgeableEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.MobEntity;
@@ -63,6 +64,10 @@ public class PAEventHandler {
 						return baby;
 					});
 					if (babyClone != null) {
+						if (babyClone instanceof AgeableEntity) {
+							((AgeableEntity) babyClone).setBaby(true);
+						}
+						babyClone.moveTo(animalParentA.getX(), animalParentA.getY(), animalParentA.getZ());
 						DifficultyInstance diff = server.getCurrentDifficultyAt(animalChild.blockPosition());
 						((AnimalEntity) babyClone).finalizeSpawn(server, diff, SpawnReason.BREEDING, null, null);
 						if (server.tryAddFreshEntityWithPassengers(babyClone)) {
