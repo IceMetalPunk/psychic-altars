@@ -81,7 +81,7 @@ public class MultiblockHelper {
 						list.add(pos);
 					}
 				}
-				boolean isOmenstone = state.getBlock() == BlockRegistry.get("omenstone");
+				boolean isOmenstone = state.getBlock() == BlockRegistry.get("omenstone").get();
 				return isOmen || isOmenstone;
 			};
 		}

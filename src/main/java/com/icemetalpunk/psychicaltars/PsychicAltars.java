@@ -36,7 +36,7 @@ public class PsychicAltars {
 	public static final ItemGroup TAB = new ItemGroup(MODID) {
 		@Override
 		public ItemStack makeIcon() {
-			return new ItemStack((Block) BlockRegistry.get("anchor_omen"));
+			return new ItemStack((Block) BlockRegistry.get("anchor_omen").get());
 		}
 	};
 	public static ICuriosCompat curiosRegistry;

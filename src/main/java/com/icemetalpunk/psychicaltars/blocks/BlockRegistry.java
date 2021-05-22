@@ -1,8 +1,7 @@
 package com.icemetalpunk.psychicaltars.blocks;
 
 import java.util.HashMap;
-
-import javax.annotation.Nullable;
+import java.util.Optional;
 
 import com.icemetalpunk.psychicaltars.blocks.IOmen.OmenTypes;
 import com.icemetalpunk.psychicaltars.blocks.altar.TelepathicAltarBlock;
@@ -51,8 +50,7 @@ public class BlockRegistry {
 		}
 	}
 
-	@Nullable
-	public static PABlock get(String name) {
-		return registry.get(name);
+	public static Optional<PABlock> get(String name) {
+		return Optional.ofNullable(registry.get(name));
 	}
 }

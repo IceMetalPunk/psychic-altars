@@ -12,7 +12,7 @@ public class OmenBlock extends PABasicBlock implements IOmen {
 	private static ArrayList<OmenBlock> allOmens = new ArrayList<>();
 
 	public OmenBlock(String name, OmenTypes type) {
-		super(AbstractBlock.Properties.copy((Block) BlockRegistry.get("omenstone")), name);
+		super(AbstractBlock.Properties.copy((Block) BlockRegistry.get("omenstone").get()), name);
 		this.type = type;
 		allOmens.add(this);
 	}

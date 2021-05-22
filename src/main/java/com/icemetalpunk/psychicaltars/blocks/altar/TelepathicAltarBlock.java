@@ -51,9 +51,9 @@ public class TelepathicAltarBlock extends PAAltarBlock {
 		IPatchouliAPI api = PatchouliAPI.get();
 		IMultiblock struct1 = api.makeMultiblock(
 				new String[][] { new String[] { "AAA", "A0A", "AAA" }, new String[] { "SOS", "OIO", "SOS" } }, 'S',
-				api.strictBlockMatcher((Block) BlockRegistry.get("omenstone")), 'I', MultiblockHelper.inventoryMatcher,
-				'O', MultiblockHelper.omenMatcher, 'A', api.anyMatcher(), '0', api.looseBlockMatcher(this))
-				.setSymmetrical(true);
+				api.strictBlockMatcher((Block) BlockRegistry.get("omenstone").get()), 'I',
+				MultiblockHelper.inventoryMatcher, 'O', MultiblockHelper.omenMatcher, 'A', api.anyMatcher(), '0',
+				api.looseBlockMatcher(this)).setSymmetrical(true);
 		api.registerMultiblock(new ResourceLocation(PsychicAltars.MODID, "telepathic_altar_tier1"), struct1);
 		this.tiers.add(struct1);
 
@@ -61,7 +61,7 @@ public class TelepathicAltarBlock extends PAAltarBlock {
 				new String[][] { new String[] { "UAAAU", "AAAAA", "AAAAA", "AAAAA", "UAAAU" },
 						new String[] { "SAAAS", "AAAAA", "AA0AA", "AAAAA", "SAAAS" },
 						new String[] { "SSOSS", "SSOSS", "OOAOO", "SSOSS", "SSOSS" } },
-				'S', api.strictBlockMatcher((Block) BlockRegistry.get("omenstone")), 'U',
+				'S', api.strictBlockMatcher((Block) BlockRegistry.get("omenstone").get()), 'U',
 				api.strictBlockMatcher(Blocks.SOUL_SAND), 'O', MultiblockHelper.omenMatcher, 'A', api.anyMatcher(), '0',
 				api.looseBlockMatcher(this)).setSymmetrical(true);
 		api.registerMultiblock(new ResourceLocation(PsychicAltars.MODID, "telepathic_altar_tier2"), struct2);
